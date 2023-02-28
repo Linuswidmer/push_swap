@@ -6,7 +6,7 @@
 /*   By: lwidmer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 19:34:09 by lwidmer           #+#    #+#             */
-/*   Updated: 2023/02/27 00:09:35 by lwidmer          ###   ########.fr       */
+/*   Updated: 2023/02/28 12:09:14 by lwidmer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,19 @@
 # include <unistd.h>
 # include <stdarg.h> 
 
-typedef struct s_stack
+typedef struct s_elem
 {
 	int			num;
-	struct s_stack	*prev;
-	struct s_stack	*next;
-}	t_stack;
+	struct s_elem	*prev;
+	struct s_elem	*next;
+}	t_elem;
 
 typedef struct s_data {
 
 	char	**split_arr;
-	t_stack *stack_a;
-	t_stack *stack_b;
+	t_elem *stack_a;
+	t_elem *stack_b;
+	int		size;
 
 } t_data;
 
@@ -47,9 +48,8 @@ char			**ft_split(char const *s, char c);
 void			*ft_calloc(size_t nmeb, size_t size);
 size_t			ft_strlcpy(char *dest, const char *src, size_t size);
 void			ft_bzero(void *s, size_t n);
-int				ft_isdigit(int c);
 int				ft_atoi(const char *nptr);
 
 
-int				check_input(int argc);
+int				check_input(char **split_arr);
 #endif

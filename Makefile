@@ -6,7 +6,7 @@
 #    By: lwidmer <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 19:41:22 by lwidmer           #+#    #+#              #
-#    Updated: 2023/02/26 19:55:47 by lwidmer          ###   ########.fr        #
+#    Updated: 2023/02/28 12:09:32 by lwidmer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = push_swap
 
 FILENAMES_FT_PRINTF = ft_strlen ft_putchar_fd ft_putstr_fd ft_intlen_base ft_printf ft_strlcpy ft_print_address_hex ft_putnbr_base
 
-FILENAMES_PUSH_SWAP = main
+FILENAMES_PUSH_SWAP = main ft_substr ft_calloc ft_bzero ft_split check_input ft_atoi
 
 SRCS_FT_PRINTF = ./srcs_ft_printf/
 SRCS_PUSH_SWAP = ./srcs_push_swap/
