@@ -14,69 +14,77 @@
 
 // Operations
 
-//previos dinger sind eigentlich erstmal egaal
-
-void swap(t_elem *elem1, t_elem *elem2)
+t_elem *swap(t_elem *first, char which)
 {
-  t_elem *tmp;
+  t_elem *zero;
+  t_elem *second;
+  t_elem *third;
 
-  if (elem1 && elem2)
+  zero = first->prev;
+  second = first->next;
+  third = second->next;
+  if (first && second && third && zero)
   {
-    tmp = elem1;
-    elem1->prev = elem2;
-    elem1->next = elem2->next;
-    elem2->next = tmp;
-    elem2->prev = tmp->prev;
-  }
-}
-
-t_elem *stack_last(t_elem *elem)
-{
-  while (elem->next)
-    elem = elem->next;
-  return (elem);
-}
-
-t_elem *rotate(t_elem *old_stack_beginning)
-{
-  t_elem *tmp;
-  t_elem *new_stack_beginning;
-
-  if (old_stack_beginning)
-  {
-    new_stack_beginning = old_stack_beginning->next;
-    new_stack_beginning->prev = NULL;
-    tmp = stack_last(old_stack_beginning);
-    tmp->next = old_stack_beginning;
-    old_stack_beginning->prev = tmp;
-    old_stack_beginning->next = NULL;
-    return (new_stack_beginning);
+    zero->next = second;
+    first->prev = second;
+    first->next = third;
+    second->next = first;
+    second->prev = zero;
+    third->prev = first;
+    ft_printf("s%c\n", which);
+    return (second);
   }
   else
-    return (NULL);
+    return (first);
 }
 
-t_elem *rev_rotate(t_elem *old_stack_beginning)
+t_elem *rotate(t_elem *stack, char which)
 {
-  t_elem *tmp;
-  t_elem *new_stack_beginning;
-
-  if (old_stack_beginning)
+  if (stack && stack->next)
   {
-    tmp = stack_last(old_stack_beginning);
-    tmp = tmp->prev;
-    tmp->next = NULL;
-    new_stack_beginning = stack_last(old_stack_beginning);
-    new_stack_beginning->prev = NULL;
-    new_stack_beginning->next = old_stack_beginning;
-    // tmp = stack_last(old_stack_beginning);
-    // tmp->next = old_stack_beginning;
-    // old_stack_beginning->prev = tmp;
-    // old_stack_beginning->next = NULL;
-    return (new_stack_beginning);
+    ft_printf("r%c\n", which);
+    return(stack->next);
   }
   else
-    return (NULL);
+    return (stack);
+}
+
+t_elem *rev_rotate(t_elem *stack, char which)
+{
+  if (stack && stack->prev)
+  {
+    ft_printf("rr%c\n", which);
+    return(stack->prev);
+  }
+  else
+    return (stack);
+}
+
+t_data *push(t_data *data, char which)
+{
+  t_elem *zero_a;
+  t_elem *first_a;
+  t_elem *second_a;
+  // t_elem *zero_b;
+  t_elem *first_b;
+  // t_elem *second_b;
+
+  first_a = data->stack_a;
+  zero_a = first_a->prev;
+  second_a = first_a->next;
+  first_b = data->stack_b;
+  // zero_b = first_b->prev;
+  // second_b = first_b->next;
+  if (data && which == 'b')
+  {
+    first_a->next = first_b;
+    data->stack_b = first_a;
+    zero_a->next = second_a;
+    data->stack_a = second_a;
+    data->size_a = data->size_a -1;
+    data->size_b = data->size_b +1;
+  }
+  return (data);
 }
 
 void process_input(t_data *data, char **argv)
@@ -85,15 +93,20 @@ void process_input(t_data *data, char **argv)
 	if (data->split_arr && check_input(data->split_arr))
 	{
 		calc_stack_size(data);
-    if (data->size > 1)
+    if (data->size_a > 1)
     {
-      ft_printf("Size of Stack a is %i\n", data->size);
+      ft_printf("Size of Stack a is %i\n", data->size_a);
 		  split_arr_to_stack(data);
+      data->stack_b = new_elem(-1);
+      data->size_b = 1;
+      // data->stack_a = rev_rotate(data->stack_a, 'a');
+      // data->stack_a = swap(data->stack_a, 'a');
+      // data->stack_a = rotate(data->stack_a, 'a');
+      data = push(data, 'b');
 		  ft_printf("Stack A:\n");
-      data->stack_a = rev_rotate(data->stack_a);
-      // data->stack_a = rotate(data->stack_a);
-      // swap(data->stack_a, next);
-		  print_stack(data->stack_a);
+		  print_stack(data->stack_a, data->size_a);
+		  ft_printf("Stack B:\n");
+      print_stack(data->stack_b, data->size_b);
     }
 	}
 }
@@ -127,9 +140,9 @@ void terminate(t_data *data)
 			free(data->split_arr);
 		}
 		if (data->stack_a)
-			free_stack(data->stack_a);
+			free_stack(data->stack_a, data->size_a);
 		if (data->stack_b)
-			free_stack(data->stack_b);
+			free_stack(data->stack_b, data->size_b);
 		free(data);
 	}
 }

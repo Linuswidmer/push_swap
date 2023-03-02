@@ -34,7 +34,8 @@ void split_arr_to_stack(t_data *data)
 		tmp = tmp_2;
 		i++; 
 	}
-	
+  tmp->next = data->stack_a;
+  data->stack_a->prev = tmp;
 }
 
 void calc_stack_size(t_data *data)
@@ -44,31 +45,33 @@ void calc_stack_size(t_data *data)
 	i = 0;
 	while (data->split_arr[i])
 		i++;
-	data->size = i;
+	data->size_a = i;
 }
 
-void print_stack(t_elem *stack)
-
+void print_stack(t_elem *stack, int size)
 {
-	while(stack)
+  int i;
+
+  i = 0;
+	while(i < size)
 	{
 		ft_printf("%i\n", stack->num);
 		stack = stack->next;
-	}
+	  i++;
+  }
 }
 
-void free_stack(t_elem *stack)
+void free_stack(t_elem *stack, int size)
 {
+  int i;
 	t_elem *tmp;
 
-	while (stack->next)
-	{
-		stack = stack->next;
-	}
-	while (stack)
+  i = 0;
+	while (i < size)
 	{
 		tmp = stack->prev;
 		free(stack);
 		stack = tmp;
+    i++;
 	}
 }
