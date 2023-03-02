@@ -12,74 +12,89 @@
 
 #include "push_swap.h"
 
-t_elem	*stacknew(int num)
-{
-	t_elem	*element;
+// Operations
 
-	element = malloc(sizeof(t_elem));
-	if (!element)
-		return (NULL);
-	element->num = num;
-	element->next = NULL;
-	element->prev = NULL;
-	return (element);
+//previos dinger sind eigentlich erstmal egaal
+
+void swap(t_elem *elem1, t_elem *elem2)
+{
+  t_elem *tmp;
+
+  if (elem1 && elem2)
+  {
+    tmp = elem1;
+    elem1->prev = elem2;
+    elem1->next = elem2->next;
+    elem2->next = tmp;
+    elem2->prev = tmp->prev;
+  }
 }
 
-void print_stack(t_elem *stack)
+t_elem *stack_last(t_elem *elem)
 {
-	while(stack)
-	{
-		ft_printf("%i\n", stack->num);
-		stack = stack->next;
-	}
+  while (elem->next)
+    elem = elem->next;
+  return (elem);
 }
 
-void split_arr_to_stack(t_data *data)
+t_elem *rotate(t_elem *old_stack_beginning)
 {
-	int i;
-	t_elem *tmp;
-	t_elem *tmp_2;
+  t_elem *tmp;
+  t_elem *new_stack_beginning;
 
-	i = 2;
-	data->stack_a = stacknew(ft_atoi(data->split_arr[0]));
-	tmp = stacknew(ft_atoi(data->split_arr[1]));
-	data->stack_a->next = tmp;
-	tmp->prev = data->stack_a;
-	while (data->split_arr[i])
-	{
-		tmp_2 = stacknew(ft_atoi(data->split_arr[i]));	
-		tmp->next = tmp_2;
-		tmp_2->prev = tmp;
-		tmp = tmp_2;
-		i++; 
-	}
-	
+  if (old_stack_beginning)
+  {
+    new_stack_beginning = old_stack_beginning->next;
+    new_stack_beginning->prev = NULL;
+    tmp = stack_last(old_stack_beginning);
+    tmp->next = old_stack_beginning;
+    old_stack_beginning->prev = tmp;
+    old_stack_beginning->next = NULL;
+    return (new_stack_beginning);
+  }
+  else
+    return (NULL);
 }
 
-
-void calc_stack_size(t_data *data)
+t_elem *rev_rotate(t_elem *old_stack_beginning)
 {
-	int i;
+  t_elem *tmp;
+  t_elem *new_stack_beginning;
 
-	i = 0;
-	while (data->split_arr[i])
-		i++;
-	data->size = i;
+  if (old_stack_beginning)
+  {
+    tmp = stack_last(old_stack_beginning);
+    tmp = tmp->prev;
+    tmp->next = NULL;
+    new_stack_beginning = stack_last(old_stack_beginning);
+    new_stack_beginning->prev = NULL;
+    new_stack_beginning->next = old_stack_beginning;
+    // tmp = stack_last(old_stack_beginning);
+    // tmp->next = old_stack_beginning;
+    // old_stack_beginning->prev = tmp;
+    // old_stack_beginning->next = NULL;
+    return (new_stack_beginning);
+  }
+  else
+    return (NULL);
 }
 
 void process_input(t_data *data, char **argv)
 {
-	int	i;
-	
-	i = 0;
 	data->split_arr = ft_split(argv[1], ' ');
 	if (data->split_arr && check_input(data->split_arr))
 	{
 		calc_stack_size(data);
-		ft_printf("Size of Stack a is %i\n", data->size);
-		split_arr_to_stack(data);
-		ft_printf("Stack A:\n");
-		print_stack(data->stack_a);
+    if (data->size > 1)
+    {
+      ft_printf("Size of Stack a is %i\n", data->size);
+		  split_arr_to_stack(data);
+		  ft_printf("Stack A:\n");
+      data->stack_a = rev_rotate(data->stack_a);
+      // data->stack_a = rotate(data->stack_a);
+      // swap(data->stack_a, next);
+		  print_stack(data->stack_a);
+    }
 	}
 }
 
@@ -94,21 +109,6 @@ t_data *init(char **argv)
 	return (data);
 }
 
-void free_stack(t_elem *stack)
-{
-	t_elem *tmp;
-
-	while (stack->next)
-	{
-		stack = stack->next;
-	}
-	while (stack)
-	{
-		tmp = stack->prev;
-		free(stack);
-		stack = tmp;
-	}
-}
 
 void terminate(t_data *data)
 {
