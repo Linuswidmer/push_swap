@@ -30,7 +30,7 @@ typedef struct s_data {
 	t_elem *stack_a;
 	t_elem *stack_b;
 	int		size_a;
-  int   size_b;
+	int   size_b;
 
 } t_data;
 
@@ -54,8 +54,8 @@ int				ft_atoi(const char *nptr);
 int				check_input(char **split_arr);
 
 t_elem	*new_elem(int num);
-void split_arr_to_stack(t_data *data);
-void calc_stack_size(t_data *data);
+void split_arr_to_stack_a(t_data *data);
+int calc_stack_size(char ** split_arr);
 void free_stack(t_elem *stack, int size);
 void print_stack(t_elem *stack, int size);
 

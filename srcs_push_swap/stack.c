@@ -15,7 +15,7 @@ t_elem	*new_elem(int num)
 }
 
 
-void split_arr_to_stack(t_data *data)
+void split_arr_to_stack_a(t_data *data)
 {
 	int i;
 	t_elem *tmp;
@@ -38,14 +38,14 @@ void split_arr_to_stack(t_data *data)
   data->stack_a->prev = tmp;
 }
 
-void calc_stack_size(t_data *data)
+int calc_stack_size(char **split_arr)
 {
 	int i;
 
 	i = 0;
-	while (data->split_arr[i])
+	while (split_arr[i])
 		i++;
-	data->size_a = i;
+	return (i);
 }
 
 void print_stack(t_elem *stack, int size)
