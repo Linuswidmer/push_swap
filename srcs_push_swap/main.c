@@ -6,119 +6,101 @@
 /*   By: lwidmer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 20:14:06 by lwidmer           #+#    #+#             */
-/*   Updated: 2023/03/03 10:54:02 by lwidmer          ###   ########.fr       */
+/*   Updated: 2023/03/03 16:58:11 by lwidmer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-// Operations
-
-t_elem *swap(t_elem *first, int size, char which)
+t_data *push_stack_size_zero(t_data *data, t_elem *from)
 {
-	t_elem *zero;
-	t_elem *second;
-	t_elem *third;
+	t_elem *zero_from;
+	t_elem *second_from;
 
-	ft_printf("s%c\n", which);
-	if (!first || size <= 1)
-		return (first);
-	else 
-	{
-		second = first->next;
-		if (size == 2)
-		{
-			first->next = second;
-			second->prev = first;
-		}
-		else
-		{
-			zero = first->prev;
-			third = second->next;
-			zero->next = second;
-			first->next = third;
-			second->prev = zero;
-			third->prev = first;
-		}
-		second->next = first;
-		first->prev = second;
-		return (second);
-	}
-}
-
-t_data *rotate_both(t_data *data)
-{
-	if (data)
-	{
-		data->stack_a = rotate(data->stack_a, 'a');
-		data->stack_b = rotate(data->stack_b, 'b');
-	}
-	else
-		return (data);
+	zero_from = from->prev;
+	second_from = from->next;
+	data->stack_b = new_elem(from->num);
+	free(from);
+	zero_from->next = second_from;
+	second_from->prev = zero_from;
+	data->stack_a = second_from;
+	data->size_a = data->size_a - 1;
+	data->size_b = data->size_b + 1;
+	return (data);
 	
 }
 
-
-t_elem *rotate(t_elem *stack, char which)
+t_data *push_stack_size_one(t_data *data, t_elem *from, t_elem *to)
 {
-  if (stack && stack->next)
-  {
-    ft_printf("r%c\n", which);
-    return(stack->next);
-  }
-  else
-    return (stack);
+	t_elem *zero_from;
+	t_elem *second_from;
+
+	zero_from = from->prev;
+	second_from = from->next;
+	from->prev = to;
+	to->next = from;
+	to->prev = from;
+	from->next = to;
+	data->stack_b = from;
+	zero_from->next = second_from;
+	second_from->prev = zero_from;
+	data->stack_a = second_from;
+	data->size_a = data->size_a - 1;
+	data->size_b = data->size_b + 1;
+	return (data);
+	
 }
 
-t_elem *rev_rotate(t_elem *stack, char which)
+t_data *push_stack_size_bigger_one(t_data *data, t_elem *from, t_elem *to)
 {
-  if (stack && stack->prev)
-  {
-    ft_printf("rr%c\n", which);
-    return(stack->prev);
-  }
-  else
-    return (stack);
+	t_elem *zero_from;
+	t_elem *second_from;
+	t_elem *zero_to;
+
+	second_from = from->next;
+	zero_from = from->prev;
+	zero_to = to->prev;
+	from->prev = zero_to;
+	zero_to->next  = from;
+	to->prev = from;
+	from->next = to;
+	data->stack_b = from;
+	zero_from->next = second_from;
+	second_from->prev = zero_from;
+	data->stack_a = second_from;
+	data->size_a = data->size_a - 1;
+	data->size_b = data->size_b + 1;
+	return (data);
 }
 
-t_data *push(t_data *data, t_elem *first_a, t_elem *first_b, char which)
+t_data *push(t_data *data, char which)
 {
-	t_elem *zero_a;
-	t_elem *second_a;
-	t_elem *zero_b;
+	t_elem *from;
+	t_elem *to;
 
-	zero_a = first_a->prev;
-	second_a = first_a->next;
-	if (data->size_b == 0)
+	ft_printf("p%c\n", which);
+	if (data)
 	{
-		data->stack_b = new_elem(first_a-> num);
-		free(first_a);
+
+		if (which == 'b')
+		{
+			from = data->stack_a;
+			to = data->stack_b;
+		}
+		else if (which == 'a')
+		{
+			from = data->stack_b;
+			to = data->stack_a;
+		}
+		if (data->size_b == 0)
+			return (push_stack_size_zero(data, from));
+		else if (data->size_b == 1)
+			return (push_stack_size_one(data, from, to));
+		else
+			return (push_stack_size_bigger_one(data, from, to));
 	}
 	else
-	{
-		if (data->size_b == 1)
-		{
-			first_a->prev = first_b;
-			first_b->next = first_a;
-		}
-		else
-		{
-			zero_b = first_b->prev;
-			first_a->prev = zero_b;
-			zero_b->next  = first_a;
-		}
-		first_b->prev = first_a;
-		first_a->next = first_b;
-		data->stack_b = first_a;
-	}
-	//first_a->prev->next = second_a;
-	zero_a->next = second_a;
-	second_a->prev = zero_a;
-	data->stack_a = second_a;
-	data->size_a = data->size_a -1;
-	data->size_b = data->size_b +1;
-	ft_printf("p%c\n", which);
-	return (data);
+		return (data);
 }
 		
 void process_input(t_data *data, char **argv)
@@ -132,11 +114,15 @@ void process_input(t_data *data, char **argv)
     	{
 			ft_printf("Size of Stack a is %i\n", data->size_a);
 			split_arr_to_stack_a(data);
-			//data->stack_b = new_elem(-1);
-			//data->size_b = 1;
-			// data->stack_a = rev_rotate(data->stack_a, 'a');
-			data->stack_a = swap(data->stack_a, data->size_a, 'a');
+			//data->stack_a = rev_rotate(data->stack_a, 'a');
+			//data->stack_a = swap(data->stack_a, data->size_a, 'a');
 			// data->stack_a = rotate(data->stack_a, 'a');
+			data = push(data, 'b');
+			data = push(data, 'b');
+			data = push(data, 'b');
+			data = push(data, 'b');
+			data = push(data, 'a');
+			//data = swap_both(data);
 			//data = push(data, data->stack_a, data->stack_b, 'b');
 			ft_printf("Stack A:\n");
 			print_stack(data->stack_a, data->size_a);
