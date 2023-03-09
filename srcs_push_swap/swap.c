@@ -6,14 +6,17 @@
 /*   By: lwidmer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 15:15:45 by lwidmer           #+#    #+#             */
-/*   Updated: 2023/03/03 15:23:27 by lwidmer          ###   ########.fr       */
+/*   Updated: 2023/03/09 11:13:37 by lwidmer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static t_elem *swap_stack_size_two(t_elem *first, t_elem *second)
+static t_elem *swap_stack_size_two(t_elem *first)
 {
+	t_elem *second;
+
+	second = first->next;
 	first->next = second;
 	second->prev = first;
 	second->next = first;
@@ -22,10 +25,12 @@ static t_elem *swap_stack_size_two(t_elem *first, t_elem *second)
 	
 }
 
-static t_elem *swap_stack_size_bigger_two(t_elem *first, t_elem *second)
+static t_elem *swap_stack_size_bigger_two(t_elem *first)
 {
 	t_elem *tmp;
-	
+	t_elem *second;
+
+	second = first->next;
 	tmp = first->prev;
 	tmp->next = second;
 	second->prev = tmp;
@@ -37,28 +42,31 @@ static t_elem *swap_stack_size_bigger_two(t_elem *first, t_elem *second)
 	return (second);
 }
 
-t_elem *swap(t_elem *first, int size, char which)
+t_data *swap(t_data *data, char which)
 {
-	t_elem *second;
 
-	if (which != 's')
-		ft_printf("s%c\n", which);
-	second = first->next;
-	if (!second || !first || size <= 1)
-		return (first);
-	else if (size == 2)
-		return (swap_stack_size_two(first, second));
-	else
-		return (swap_stack_size_bigger_two(first, second));
+	ft_printf("s%c\n", which);
+	if ((which == 'a' || which == 's') && data->stack_a)
+	{
+		if (data->size_a == 2)
+			data->stack_a = swap_stack_size_two(data->stack_a);
+		else if (data->size_a > 2)
+			data->stack_a = swap_stack_size_bigger_two(data->stack_a);
+	}
+	if ((which == 'b' || which == 's') && data->stack_b)
+	{
+		if (data->size_b == 2)
+			data->stack_b = swap_stack_size_two(data->stack_b);
+		else if (data->size_b > 2)
+			data->stack_b = swap_stack_size_bigger_two(data->stack_b);
+	}
+	return (data);
 }
+
 
 t_data *swap_both(t_data *data)
 {
-	ft_printf("ss\n");
 	if (data)
-	{
-		data->stack_a = swap(data->stack_a, data->size_a, 's');
-		data->stack_b = swap(data->stack_b, data->size_b, 's');
-	}
+		data = swap(data, 's');
 	return (data);
 }

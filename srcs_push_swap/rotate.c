@@ -6,54 +6,43 @@
 /*   By: lwidmer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 15:23:42 by lwidmer           #+#    #+#             */
-/*   Updated: 2023/03/03 15:23:44 by lwidmer          ###   ########.fr       */
+/*   Updated: 2023/03/09 10:45:08 by lwidmer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-t_elem *rotate(t_elem *stack, char which)
+t_data *rotate(t_data *data, char which)
 {
-  if (stack && stack->next)
-  {
-	if (which != 'r')
-    	ft_printf("r%c\n", which);
-    return(stack->next);
-  }
-  else
-    return (stack);
+	if ((which == 'a' || which == 'r') && data->stack_a)
+			data->stack_a = data->stack_a->next;	
+	if ((which == 'b' || which == 'r') && data->stack_b)
+			data->stack_b = data->stack_b->next;	
+    ft_printf("r%c\n", which);
+	return (data);
 }
 
-t_elem *rev_rotate(t_elem *stack, char which)
+t_data *rev_rotate(t_data *data, char which)
 {
-  if (stack && stack->prev)
-  {
-	if (which != 'r')
-    	ft_printf("rr%c\n", which);
-    return(stack->prev);
-  }
-  else
-    return (stack);
+	if ((which == 'a' || which == 'r') && data->stack_a)
+			data->stack_a = data->stack_a->prev;
+	if ((which == 'b'|| which == 'r') && data->stack_b)
+			data->stack_b = data->stack_b->prev;	
+    ft_printf("rr%c\n", which);
+	return (data);
 }
 
 t_data *rotate_both(t_data *data)
 {
-    ft_printf("rr\n");
 	if (data)
-	{
-		data->stack_a = rotate(data->stack_a, 'r');
-		data->stack_b = rotate(data->stack_b, 'r');
-	}
+		data = rotate(data, 'r');
 	return (data);
 }
 
+
 t_data *rev_rotate_both(t_data *data)
 {
-    ft_printf("rrr\n");
 	if (data)
-	{
-		data->stack_a = rev_rotate(data->stack_a, 'r');
-		data->stack_b = rev_rotate(data->stack_b, 'r');
-	}
+		data = rev_rotate(data, 'r');
 	return (data);
 }

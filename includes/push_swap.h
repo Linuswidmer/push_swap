@@ -59,12 +59,13 @@ int calc_stack_size(char ** split_arr);
 void free_stack(t_elem *stack, int size);
 void print_stack(t_elem *stack, int size);
 
-t_elem *swap(t_elem *first, int size, char which);
+t_data *swap(t_data *data, char which);
 t_data *swap_both(t_data *data);
-t_elem *rotate(t_elem *stack, char which);
-t_elem *rev_rotate(t_elem *stack, char which);
+t_data *rotate(t_data *data, char which);
+t_data *rev_rotate(t_data *data, char which);
 t_data *rotate_both(t_data *data);
 t_data *rev_rotate_both(t_data *data);
+t_data *push(t_data *data, char which);
 
 
 #endif
