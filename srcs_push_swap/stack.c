@@ -6,12 +6,11 @@
 /*   By: lwidmer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 11:27:36 by lwidmer           #+#    #+#             */
-/*   Updated: 2023/03/08 11:38:06 by lwidmer          ###   ########.fr       */
+/*   Updated: 2023/03/09 11:51:51 by lwidmer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
 
 t_elem	*new_elem(int num)
 {
@@ -27,22 +26,22 @@ t_elem	*new_elem(int num)
 }
 
 
-void split_arr_to_stack_a(t_data *data)
+void split_arr_to_stack_a(t_data *data, int *index_arr)
 {
 	int i;
 	t_elem *tmp;
 	t_elem *tmp_2;
 
 	i = 2;
-	data->stack_a = new_elem(ft_atoi(data->split_arr[0]));
+	data->stack_a = new_elem(index_arr[0]);
 	if (data->size_a > 1)
 	{
-		tmp = new_elem(ft_atoi(data->split_arr[1]));
+		tmp = new_elem(index_arr[1]);
 		data->stack_a->next = tmp;
 		tmp->prev = data->stack_a;
 		while (data->split_arr[i])
 		{
-			tmp_2 = new_elem(ft_atoi(data->split_arr[i]));	
+			tmp_2 = new_elem(index_arr[i]);	
 			tmp->next = tmp_2;
 			tmp_2->prev = tmp;
 			tmp = tmp_2;
@@ -66,20 +65,6 @@ int calc_stack_size(char **split_arr)
 	while (split_arr[i])
 		i++;
 	return (i);
-}
-
-void print_stack(t_elem *stack, int size)
-{
-  int i;
-
-  i = 0;
-	ft_printf("First List elem is %p\n", stack);
-	while(i < size)
-	{
-		ft_printf("Value is %i,     Previous is %i,    Next is %i\n", stack->num, stack->prev->num, stack->next->num);
-		stack = stack->next;
-	  i++;
-  }
 }
 
 void free_stack(t_elem *stack, int size)

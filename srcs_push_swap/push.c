@@ -6,7 +6,7 @@
 /*   By: lwidmer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 10:24:20 by lwidmer           #+#    #+#             */
-/*   Updated: 2023/03/09 10:24:22 by lwidmer          ###   ########.fr       */
+/*   Updated: 2023/03/09 11:15:33 by lwidmer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static t_data *stack_first(t_data *data, t_elem *from, t_elem *new_beginning_fro
 	return (data);
 }
 
-t_data *push_stack_size_zero(t_data *data, t_elem *from)
+static t_data *push_stack_size_zero(t_data *data, t_elem *from)
 {
 	t_elem *zero_from;
 	t_elem *second_from;
@@ -50,7 +50,7 @@ t_data *push_stack_size_zero(t_data *data, t_elem *from)
 	return (data);
 }
 
-t_data *push_stack_size_one(t_data *data, t_elem *from, t_elem *to)
+static t_data *push_stack_size_one(t_data *data, t_elem *from, t_elem *to)
 {
 	t_elem *zero_from;
 	t_elem *second_from;
@@ -75,7 +75,7 @@ t_data *push_stack_size_one(t_data *data, t_elem *from, t_elem *to)
 	return (data);
 }
 
-t_data *push_stack_size_bigger_one(t_data *data, t_elem *from, t_elem *to)
+static t_data *push_stack_size_bigger_one(t_data *data, t_elem *from, t_elem *to)
 {
 	t_elem *zero_from;
 	t_elem *second_from;
