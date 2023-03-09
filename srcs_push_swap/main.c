@@ -6,31 +6,46 @@
 /*   By: lwidmer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 20:14:06 by lwidmer           #+#    #+#             */
-/*   Updated: 2023/03/08 11:58:18 by lwidmer          ###   ########.fr       */
+/*   Updated: 2023/03/09 10:11:46 by lwidmer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+t_data *stack_first(t_data *data, t_elem *from, t_elem *new_beginning_from, t_elem* new_beginning_to)
+{
+	if (from == data->stack_a)
+	{
+		data->stack_b = new_beginning_to;
+		data->stack_a = new_beginning_from;
+	}
+	else 
+	{
+		data->stack_a = new_beginning_to;
+		data->stack_b = new_beginning_from;
+	}
+	return (data);
+}
+
 t_data *push_stack_size_zero(t_data *data, t_elem *from)
 {
 	t_elem *zero_from;
 	t_elem *second_from;
+	t_elem *new_beginning_to;
 
-	data->stack_b = new_elem(from->num);
-	data->stack_b->next = data->stack_b;
-	data->stack_b->prev = data->stack_b;
-	
+	new_beginning_to = new_elem(from->num);
+	new_beginning_to->next  = new_beginning_to;
+	new_beginning_to->prev  = new_beginning_to;
 	if (from == from->prev)
-		data->stack_a = NULL;
+		second_from = NULL;
 	else
 	{
 		zero_from = from->prev;
 		second_from = from->next;
 		zero_from->next = second_from;
 		second_from->prev = zero_from;
-		data->stack_a = second_from;
 	}
+	data = stack_first(data, from, second_from, new_beginning_to);
 	free(from);
 	return (data);
 }
@@ -46,17 +61,16 @@ t_data *push_stack_size_one(t_data *data, t_elem *from, t_elem *to)
 	new_beginning_to->next = to;
 	to->next = new_beginning_to;
 	to->prev = new_beginning_to;
-	data->stack_b = new_beginning_to;
 	if (from == from->prev)
-		data->stack_a = NULL;
+		second_from = NULL;
 	else
 	{
 		zero_from = from->prev;
 		second_from = from->next;
 		zero_from->next = second_from;
 		second_from->prev = zero_from;
-		data->stack_a = second_from;
 	}
+	data = stack_first(data, from, second_from, new_beginning_to);
 	free(from);
 	return (data);
 }
@@ -68,27 +82,24 @@ t_data *push_stack_size_bigger_one(t_data *data, t_elem *from, t_elem *to)
 	t_elem *zero_to;
 	t_elem *new_beginning_to;
 
-	if (from)
+	zero_to = to->prev;
+	new_beginning_to = new_elem(from->num);
+	new_beginning_to->prev = zero_to;
+	new_beginning_to->next = to;
+	zero_to->next = new_beginning_to;
+	to->prev = new_beginning_to;
+	data->stack_b = new_beginning_to;
+	if (from == from->next)
+		second_from = NULL;
+	else
 	{
-		zero_to = to->prev;
-		new_beginning_to = new_elem(from->num);
-		new_beginning_to->prev = zero_to;
-		new_beginning_to->next = to;
-		zero_to->next = new_beginning_to;
-		to->prev = new_beginning_to;
-		data->stack_b = new_beginning_to;
-		if (from == from->next)
-			data->stack_a = NULL;
-		else
-		{
-			second_from = from->next;
-			zero_from = from->prev;
-			zero_from->next = second_from;
-			second_from->prev = zero_from;
-			data->stack_a = second_from;
-		}
-		free(from);
+		second_from = from->next;
+		zero_from = from->prev;
+		zero_from->next = second_from;
+		second_from->prev = zero_from;
 	}
+	data = stack_first(data, from, second_from, new_beginning_to);
+	free(from);
 	return (data);
 }
 
@@ -138,9 +149,11 @@ void process_input(t_data *data, char **argv)
 			//data->stack_a = swap(data->stack_a, data->size_a, 'a');
 			// data->stack_a = rotate(data->stack_a, 'a');
 			data = push(data, 'b');
+			data = push(data, 'a');
 			data = push(data, 'b');
 			data = push(data, 'b');
 			data = push(data, 'b');
+			//data = push(data, 'a');
 			//data = push(data, 'a');
 			//data = swap_both(data);
 			//data = push(data, data->stack_a, data->stack_b, 'b');
