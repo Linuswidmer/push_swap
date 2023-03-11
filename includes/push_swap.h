@@ -65,7 +65,7 @@ int				check_input(char **split_arr);
 t_elem	*new_elem(int num);
 void split_arr_to_stack_a(t_data *data, int *index_arr);
 int calc_stack_size(char ** split_arr);
-void free_stack(t_elem *stack, int size);
+int  *calc_data_index(t_data *data);
 
 /* print.c */
 void print_stack(t_elem *stack, int size);
@@ -83,6 +83,16 @@ t_data *rev_rotate_both(t_data *data);
 
 /* push.c */
 t_data *push(t_data *data, char which);
+
+/* init.c */
+t_data *init(char **argv);
+void process_input(t_data *data, char **argv);
+
+/* terminate.c */
+void terminate(t_data *data);
+
+/* sort.c */
+t_data *bubble_sort(t_data *data);
 
 
 #endif

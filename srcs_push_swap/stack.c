@@ -12,6 +12,43 @@
 
 #include "push_swap.h"
 
+int calc_stack_size(char **split_arr)
+{
+	int i;
+
+	i = 0;
+	while (split_arr[i])
+		i++;
+	return (i);
+}
+
+int  *calc_data_index(t_data *data)
+{
+	int *arr;
+	int i;
+	int j;
+	int index;
+
+	arr = malloc(sizeof(int) * data->size_a);
+	if (!arr)
+		return (NULL);
+	i = 0;
+	while (i < data->size_a)
+	{
+		j = 0;
+		index = 0;
+		while (j < data->size_a)
+		{
+			if (ft_atoi(data->split_arr[i]) > ft_atoi(data->split_arr[j]))
+				index++;
+			j++;
+		}
+		arr[i] = index;
+		i++;
+	}
+	return (arr);
+}
+
 t_elem	*new_elem(int num)
 {
 	t_elem	*element;
@@ -24,7 +61,6 @@ t_elem	*new_elem(int num)
 	element->prev = NULL;
 	return (element);
 }
-
 
 void split_arr_to_stack_a(t_data *data, int *index_arr)
 {
@@ -54,30 +90,5 @@ void split_arr_to_stack_a(t_data *data, int *index_arr)
 	{
 		data->stack_a->prev = data->stack_a;
 		data->stack_a->next = data->stack_a;
-	}
-}
-
-int calc_stack_size(char **split_arr)
-{
-	int i;
-
-	i = 0;
-	while (split_arr[i])
-		i++;
-	return (i);
-}
-
-void free_stack(t_elem *stack, int size)
-{
-  int i;
-	t_elem *tmp;
-
-  i = 0;
-	while (i < size)
-	{
-		tmp = stack->prev;
-		free(stack);
-		stack = tmp;
-    i++;
 	}
 }

@@ -14,7 +14,7 @@ NAME = push_swap
 
 FILENAMES_FT_PRINTF = ft_strlen ft_putchar_fd ft_putstr_fd ft_intlen_base ft_printf ft_strlcpy ft_print_address_hex ft_putnbr_base
 
-FILENAMES_PUSH_SWAP = main ft_split check_input stack swap rotate push print utils
+FILENAMES_PUSH_SWAP = main ft_split check_input stack swap rotate push print utils terminate init sort
 
 SRCS_FT_PRINTF = ./srcs_ft_printf/
 SRCS_PUSH_SWAP = ./srcs_push_swap/
