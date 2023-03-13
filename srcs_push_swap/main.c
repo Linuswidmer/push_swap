@@ -6,7 +6,7 @@
 /*   By: lwidmer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 20:14:06 by lwidmer           #+#    #+#             */
-/*   Updated: 2023/03/13 11:15:00 by lwidmer          ###   ########.fr       */
+/*   Updated: 2023/03/13 13:00:33 by lwidmer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,46 @@ t_data *rotate_sorted_list(t_data *data, char which)
 	return (data);
 }
 
+
+t_data *insert_adjacent_found(t_data *data, int rotations)
+{
+	ft_printf("adjacent found\n");
+	while (rotations)
+	{
+		data = rotate(data, 'a');
+		rotations--;
+	}
+	data = push(data, 'a');
+	return (data);
+
+}
+
+t_data *insert_adjacent_not_found(t_data *data)
+{
+}
+
+t_data *insertion_sort(t_data *data)
+{
+	int rotations;
+	t_elem *tmp;
+	
+	tmp = data->stack_a;
+	rotations = 0;
+	while (rotations < data->size_a)
+	{
+		if (tmp->prev->num < data->stack_b->num && tmp->num > data->stack_b->num)
+			break;
+		tmp = tmp->next;
+		rotations++;
+	}
+	if (rotations < data->size_a)
+		data = insert_adjacent_found(data, rotations);
+	else
+		data = insert_adjacent_not_found(data);
+	return (data);
+}
+
+/*
 t_data *insertion_sort(t_data *data)
 {
 	int rotations;
@@ -114,6 +154,7 @@ t_data *insertion_sort(t_data *data)
 	return (data);
 }
 
+*/
 
 t_data *sort_five(t_data *data)
 {
@@ -143,6 +184,8 @@ t_data *sorting_decision(t_data *data, int size)
 	return (data);
 }
 
+
+
 int main(int argc, char **argv)
 {
 	t_data *data;
@@ -158,11 +201,7 @@ int main(int argc, char **argv)
 		//data = sort_three(data);
 		//data = sorting_decision(data, data->size_a);
 		data = sort_five(data);
-		//data = swap(data, 'a');
-		//data = rotate(data, 'a');
-		//data = push(data, 'b');
-		//data = insertion_sort(data);
-		//data = rotate_sorted_list(data, 'a');
+
 		//ft_printf("Stack A:\n");
 		//print_stack(data->stack_a, data->size_a);
 		terminate(data);
