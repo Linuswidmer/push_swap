@@ -59,12 +59,12 @@ int check_input(char **split_arr)
 {
 	if (check_if_input_numeric(split_arr) == 0)
 	{
-		ft_printf("Error");
+		ft_printf("Error\n");
 		return (0);
 	}
 	if (check_if_no_doubles(split_arr) == 0)
 	{
-		ft_printf("Error");
+		ft_printf("Error\n");
 		return (0);
 	}
 	return (1);

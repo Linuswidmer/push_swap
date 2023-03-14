@@ -14,7 +14,7 @@ NAME = push_swap
 
 FILENAMES_FT_PRINTF = ft_strlen ft_putchar_fd ft_putstr_fd ft_intlen_base ft_printf ft_strlcpy ft_print_address_hex ft_putnbr_base
 
-FILENAMES_PUSH_SWAP = main ft_split check_input stack swap rotate push print utils terminate init sort
+FILENAMES_PUSH_SWAP = main ft_split check_input stack swap rotate push print utils terminate init sort sort_two_three
 
 SRCS_FT_PRINTF = ./srcs_ft_printf/
 SRCS_PUSH_SWAP = ./srcs_push_swap/
@@ -45,6 +45,10 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+twenty:
+	./push_swap "11 16 15 0 8 2 19 3 17 13 6 5 14 7 12 4 18 1 10 9"
+	# ./push_swap "11 16 2 0 8 15 19 3 17 13 6 5 14 7 12 4 9 1 10 18"
 
 memory:
 	cc -g3 -fsanitize=address -Werror -Wall -Wextra ${SRCS} $(MINILIBXFLAGS) ${INCLUDES_DIR} -L. ./libft/libft.a -o fdf

@@ -23,6 +23,7 @@ void process_input(t_data *data, char **argv)
     		if (data->size_a >= 1)
     		{
 			arr = calc_data_index(data);
+      data->max_value = data->size_a - 1;
 			//ft_printf("Index Array: \n");
 			//print_arr_index(arr, data->size_a);
 			//ft_printf("Size of Stack a is %i\n", data->size_a);

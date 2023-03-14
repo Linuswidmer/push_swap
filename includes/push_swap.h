@@ -31,6 +31,7 @@ typedef struct s_data {
 	t_elem *stack_b;
 	int		size_a;
 	int   size_b;
+  int   max_value;
 
 } t_data;
 
@@ -93,6 +94,11 @@ void terminate(t_data *data);
 
 /* sort.c */
 t_data *bubble_sort(t_data *data);
+
+/* sort_two_three */
+
+t_data *sort_two(t_data *data);
+t_data *sort_three(t_data *data);
 
 
 #endif
